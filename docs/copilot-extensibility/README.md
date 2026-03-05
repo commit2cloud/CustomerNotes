@@ -9,6 +9,7 @@
 | [Feature Breakdown](feature-breakdown.md) | Detailed explanation of each feature with use cases |
 | [Comparison & Decision Guide](comparison-and-decision-guide.md) | Side-by-side table and decision tree for recommending the right feature |
 | [Slide Deck (Marp)](slide-deck.md) | Customer-facing presentation (render with [Marp](https://marp.app)) |
+| [Slide Deck (PowerPoint)](copilot-extensibility-guide.pptx) | 15-slide `.pptx` deck ready to present |
 
 ## TL;DR
 
