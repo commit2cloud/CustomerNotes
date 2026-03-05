@@ -85,7 +85,7 @@ For customers who aren't ready for a full migration, a hybrid deployment deliver
 
 ### How It Works
 
-| Workload | Platform | Why |
+| Workload | Platform | Rationale |
 |---|---|---|
 | Legacy/regulated applications | **GHES** | Stays on-prem, satisfies data residency, continues with existing GHAS coverage |
 | New projects & greenfield development | **GHEC** | Gets Copilot Autofix, Security Campaigns, latest features from day one |
