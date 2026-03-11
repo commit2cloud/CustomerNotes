@@ -42,6 +42,11 @@ The demo is structured to follow RCCL's SDLC phases — **Initiation → Build �
 | [Slide Deck (Marp)](slide-deck.md) | Customer-facing presentation — render with [Marp](https://marp.app) |
 | [Demo Script](demo-script.md) | Step-by-step script with talking points, transitions, and live-demo instructions |
 
+### Reference Slide Decks (Seismic)
+
+- [Agentic SDLC Slide Deck](https://github.seismic.com/apps/doccenter/f3402112-cd44-44a7-8040-ddee829474cf/doc/%2Fddb198ef0c-d064-a795-2dae-766e09c5aad7%2Flf1b42b4ea-aa6f-4d4f-8989-90227e8a9a35//?mode=view&searchId=a2a30063-b04a-470e-8265-3447e5fb28de)
+- [Product / Feature Overview Slide Deck](https://github.seismic.com/apps/doccenter/f3402112-cd44-44a7-8040-ddee829474cf/doc/%25252Fddb198ef0c-d064-a795-2dae-766e09c5aad7%25252FdfOWU4ZmUzNGQtODFlMy00YzE3LTk0YzMtNTYyMzA1MzgwOTU4%25252CPT0%25253D%25252CUHJvZHVjdC9mZWF0dXJlIG92ZXJ2aWV3%25252Flf10291e99-e598-411a-837a-42945b747a90//?mode=view&searchId=a2a30063-b04a-470e-8265-3447e5fb28de)
+
 ---
 
 ## RCCL Context & Tool Stack
