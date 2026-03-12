@@ -3,9 +3,9 @@
 ## TIMING BREAKDOWN
 
 - Introduction (2 mins)
-- Core Concepts (3 mins)
-- Live Demo - Basic Skills (5 mins)
-- Live Demo - Advanced Skills (7 mins)
+- What Are Custom Skills (3 mins)
+- Pre-Built Skills Demo (6 mins)
+- Live Skill Creation (6 mins)
 - Best Practices & Q&A (3 mins)
 
 ---
@@ -15,197 +15,451 @@
 ### INTRODUCTION (2 MINS)
 
 **Opening Statement:**
-"Today we're going to explore GitHub Copilot Skills - a powerful way to have natural conversations with AI about your codebase. Think of it as moving from autocomplete to having an expert pair programmer who can understand your entire repository context."
+
+"Today we're diving into GitHub Copilot Skills - specifically, how you can create custom skills to extend Copilot with your team's unique workflows, tools, and domain knowledge. Think of skills as teaching Copilot new capabilities that are specific to your organization."
 
 **Key Points to Hit:**
-- Skills extend Copilot beyond code completion into intelligent assistance
-- Works in VS Code, Visual Studio, GitHub.com, and CLI
-- Uses your repo structure, files, and context automatically
-- Available to all Copilot Individual, Business, and Enterprise users
+
+- Skills are declarative YAML definitions stored in `.github/skills.yml`
+- They extend Copilot Chat with custom `@skillname` commands
+- Two types: **prompt-based** (instructions) and **URL-based** (API integrations)
+- Work across VS Code, Visual Studio, GitHub.com, and CLI
+- Available in Copilot Business and Enterprise
+
+**The Value Proposition:**
+
+"Out of the box, Copilot knows general programming. But it doesn't know YOUR deployment process, YOUR coding standards, YOUR internal APIs. Custom skills bridge that gap."
 
 ---
 
-### CORE CONCEPTS (3 MINS)
+### WHAT ARE CUSTOM SKILLS (3 MINS)
 
-**What Are Copilot Skills?**
+**Core Concept:**
 
-"Copilot Skills are specialized capabilities that let you interact with different aspects of your development workflow through natural language."
+"Custom Copilot Skills are defined in a `.github/skills.yml` file in your repository. When developers type `@skillname` in Copilot Chat, they're invoking that custom capability."
 
-**Built-in Skills Include:**
-- **@workspace** - Understands your entire codebase, file structure, and context
-- **@terminal** - Helps with CLI commands, shell scripts, and debugging terminal errors
-- **@vscode** - Assists with VS Code settings, extensions, and editor configuration
-- **@github** - Searches repos, issues, PRs, discussions, and documentation
-- **Extension Skills** - Connect to Jira, Sentry, Azure, and more
+**TWO TYPES OF SKILLS**
 
-**The @ Symbol Pattern:**
-"When you type @ in Copilot Chat, you're invoking a skill. Think of it as telling Copilot where to focus its attention."
+**1. PROMPT-BASED SKILLS**
+
+"These transform the user's query with additional instructions or context before sending it to Copilot."
+
+Example use cases:
+- Enforce coding standards ("always use our error handling pattern")
+- Provide domain context ("explain this in terms of our e-commerce platform")
+- Guide responses ("format output as a security report")
+
+**2. URL-BASED SKILLS**
+
+"These call external APIs or webhooks, bringing external data into the Copilot conversation."
+
+Example use cases:
+- Query internal documentation systems
+- Check deployment status from CI/CD
+- Look up ticket details from Jira/ServiceNow
+- Fetch API schemas from internal catalogs
+
+**File Structure:**
+
+```yaml
+skills:
+  - name: skillname
+    description: "What this skill does"
+    type: prompt | url
+    prompt: "Instructions for Copilot" # for prompt-based
+    url: "https://api.example.com/endpoint" # for URL-based
+```
 
 ---
 
-### LIVE DEMO - BASIC SKILLS (5 MINS)
+### PRE-BUILT SKILLS DEMO (6 MINS)
+
+**Setup:**
+Have a demo repo with `.github/skills.yml` already configured with 2-3 skills ready to showcase.
+
+---
+
+#### EXAMPLE 1: PROMPT-BASED SKILL - CODE STANDARDS (2 mins)
+
+**Skill Definition:**
+
+```yaml
+skills:
+  - name: standards
+    description: "Review code against our team coding standards"
+    type: prompt
+    prompt: |
+      You are a code reviewer enforcing our team standards:
+      - All functions must have JSDoc comments
+      - Use async/await, never callbacks
+      - Error handling must use our custom ErrorHandler class
+      - All API calls must include timeout configuration
+      
+      Review the code and provide specific feedback on violations.
+```
 
 **Demo Flow:**
 
-#### 1. SHOW @WORKSPACE IN ACTION (2 mins)
-
-Open Copilot Chat in VS Code
-Type: `@workspace what does this codebase do?`
-
-**Talk Track:**
-"Notice I didn't specify files. @workspace scans your repo structure, reads relevant files, and gives you a summary. This is incredible for onboarding new developers."
-
-**Follow-up Query:**
-`@workspace where is authentication handled?`
+1. Highlight a function in VS Code that violates standards
+2. In Copilot Chat, type: `@standards review this function`
+3. Show Copilot's response with specific standard violations
 
 **Talk Track:**
-"It's searching across multiple files, understanding relationships, and pointing me to specific locations. This saves hours of grep-ing through code."
 
-#### 2. SHOW @TERMINAL SKILL (1.5 mins)
-
-- Intentionally run a failing command or show an error in terminal
-- Highlight the error, open Copilot Chat
-- Click "Explain" or ask: `@terminal why did this fail?`
-
-**Talk Track:**
-"@terminal understands your shell environment, command history, and error messages. It's like having a DevOps expert on call."
-
-#### 3. SHOW CODE CONTEXT WITHOUT @ (1.5 mins)
-
-- Highlight a function in your editor
-- Ask in Chat: `explain this function and suggest improvements`
-
-**Talk Track:**
-"Even without @, Copilot sees your highlighted code. But watch what happens when I need broader context..."
-
-Then ask: `@workspace how is this function used across the codebase?`
-
-**Talk Track:**
-"Now it's searching everywhere this function is called. That's the power of skills - contextual awareness."
+"Notice I created a custom reviewer that knows our team's specific rules. I didn't have to repeat our standards - the skill carries that context automatically. This is perfect for onboarding new developers who are learning your patterns."
 
 ---
 
-### LIVE DEMO - ADVANCED SKILLS (7 MINS)
+#### EXAMPLE 2: PROMPT-BASED SKILL - DOCUMENTATION FORMATTER (2 mins)
+
+**Skill Definition:**
+
+```yaml
+skills:
+  - name: docs
+    description: "Generate documentation in our team's standard format"
+    type: prompt
+    prompt: |
+      Generate documentation using our standard template:
+      
+      ## Overview
+      Brief description (2-3 sentences)
+      
+      ## Usage
+      Code example with imports
+      
+      ## Parameters
+      Table with: Name | Type | Required | Description
+      
+      ## Returns
+      Description of return value
+      
+      ## Example
+      Real-world usage scenario
+      
+      Use Markdown. Be concise.
+```
 
 **Demo Flow:**
 
-#### 4. MULTI-FILE EDITING WITH @WORKSPACE (3 mins)
-
-Ask: `@workspace add error handling to all API calls in the services folder`
-
-**Talk Track:**
-"This is where it gets powerful. I'm asking Copilot to understand a pattern across multiple files and apply consistent changes. In the past, this would require regex find-replace or manual updates."
-
-- Show the suggested changes
-- Accept or refine them
+1. Highlight a function
+2. Type: `@docs document this function`
+3. Show formatted output matching your template
 
 **Talk Track:**
-"Notice it's showing me exactly what will change in each file. I maintain control but save massive amounts of time."
 
-#### 5. SLASH COMMANDS WITHIN SKILLS (2 mins)
-
-Show: `@workspace /tests generate unit tests for the UserService class`
-
-**Talk Track:**
-"Slash commands are shortcuts for common tasks. /tests, /fix, /doc, /explain - they work with skills to be more specific."
-
-**Other examples to mention:**
-- `@workspace /doc add JSDoc comments to all public methods`
-- `@workspace /fix the bug in the checkout flow`
-
-#### 6. AGENT MODE (2 mins)
-
-- Open Copilot Edits (multi-file editing mode)
-- Add files to the working set
-- Ask: `refactor these components to use TypeScript interfaces instead of types`
-
-**Talk Track:**
-"Agent mode - or Copilot Edits - lets you work across multiple files simultaneously. Add files to your working set, describe what you want, and Copilot proposes changes across all of them. This is perfect for large refactoring tasks."
-
-Show accept/reject flow
+"Every team has their own documentation style. Instead of manually formatting every time, we encode it once as a skill. Now everyone generates consistent docs automatically."
 
 ---
 
-### BEST PRACTICES & TIPS (3 MINS)
+#### EXAMPLE 3: URL-BASED SKILL - INTERNAL API LOOKUP (2 mins)
 
-**Best Practices for Your Team:**
+**Skill Definition:**
 
-**BE SPECIFIC WITH CONTEXT**
-- Use @workspace when you need codebase-wide understanding
-- Highlight code when asking about specific functions
-- Reference file names: "in src/auth/login.js, how should I..."
+```yaml
+skills:
+  - name: apicheck
+    description: "Query our internal API documentation"
+    type: url
+    url: "https://internal-docs.company.com/api/search"
+    headers:
+      Authorization: "Bearer ${DOCS_API_TOKEN}"
+```
 
-**ITERATE YOUR PROMPTS**
-- Start broad: `@workspace how does user authentication work?`
-- Then narrow: `show me the JWT validation logic`
-- Then act: `add refresh token support to this flow`
+**Demo Flow:**
 
-**USE CHAT HISTORY**
-- Copilot remembers your conversation thread
-- Build on previous responses
-- Say "apply that pattern to the payment service too"
+1. Type: `@apicheck how do I authenticate with the payments API?`
+2. Show Copilot querying the internal system and returning results
 
-**LEVERAGE FOR ONBOARDING**
-- `@workspace explain the folder structure`
-- `@workspace what coding standards does this project use?`
-- `@workspace how do I run tests?`
+**Talk Track:**
 
-**VERIFY AND REVIEW**
-- Always review suggestions before accepting
-- Copilot is a pair programmer, not a replacement for your expertise
-- Use it to accelerate, not to blindly generate
+"This skill reaches out to our internal documentation system. Copilot sends the query to our API, gets back the relevant docs, and includes it in the response. Now developers don't context-switch to internal wikis - the answers come right into their IDE."
+
+**Note:** Have a mock endpoint or screenshot ready if live demo isn't feasible.
 
 ---
 
-### COMMON DEVELOPER WORKFLOWS
+### LIVE SKILL CREATION (6 MINS)
 
-**Quick examples to share:**
+**Setup:**
+Walk through creating a simple prompt-based skill from scratch.
 
-- **Debugging:** "I'm getting error X in the console, help me trace where it's coming from"
-- **Testing:** `@workspace /tests create integration tests for the checkout flow`
-- **Documentation:** `@workspace /doc create a README for the new API module`
-- **Refactoring:** `@workspace identify duplicate code in the utils folder`
-- **Learning:** `@workspace explain why we're using Redis here instead of in-memory cache`
+---
+
+**Scenario:**
+
+"Let's create a skill that helps developers write commit messages following our team's conventional commit format."
+
+---
+
+**Step 1: Create the file (1 min)**
+
+1. In VS Code, create `.github/skills.yml` in the demo repo
+2. Start with the basic structure:
+
+```yaml
+skills:
+  - name: commitmsg
+    description: "Generate conventional commit messages"
+    type: prompt
+```
+
+**Talk Track:**
+
+"Skills live in `.github/skills.yml` at the root of your repo. You define them as a list under the `skills` key. Each skill needs a name, description, and type."
+
+---
+
+**Step 2: Add the prompt (2 mins)**
+
+```yaml
+skills:
+  - name: commitmsg
+    description: "Generate conventional commit messages"
+    type: prompt
+    prompt: |
+      Generate a commit message using Conventional Commits format:
+      
+      Format: <type>(<scope>): <subject>
+      
+      Types: feat, fix, docs, style, refactor, test, chore
+      
+      Rules:
+      - Subject line max 50 characters
+      - Use imperative mood ("add" not "added")
+      - No period at the end
+      - Body wraps at 72 characters if needed
+      
+      Based on the code changes, generate an appropriate commit message.
+```
+
+**Talk Track:**
+
+"The `prompt` field is where we teach Copilot our team's specific requirements. I'm encoding our commit message format rules here once, so everyone follows the same convention."
+
+---
+
+**Step 3: Test the skill (2 mins)**
+
+1. Make a code change in the demo repo
+2. Stage the changes
+3. Open Copilot Chat
+4. Type: `@commitmsg write a commit message for my staged changes`
+5. Show the formatted output
+
+**Talk Track:**
+
+"Just like that, we have a working skill. Copilot read the git diff, applied our formatting rules, and generated a compliant commit message. This is the power of skills - codifying team knowledge into reusable commands."
+
+---
+
+**Step 4: Commit and share (1 min)**
+
+1. Commit the `.github/skills.yml` file
+2. Push to the repo
+
+**Talk Track:**
+
+"Once this is committed, every developer who pulls this repo gets access to `@commitmsg` automatically. No installation, no configuration. It just works."
+
+---
+
+### BEST PRACTICES (3 MINS)
+
+**SKILL DESIGN PRINCIPLES**
+
+**Keep Skills Focused**
+
+- One skill = one responsibility
+- Don't create a mega-skill that does everything
+- Example: `@security-scan` not `@checkeverything`
+
+**Write Clear Descriptions**
+
+- Developers see descriptions when they type `@` in Chat
+- Be specific about what the skill does
+- Example: "Check code against OWASP Top 10" vs "Security stuff"
+
+**Use Descriptive Names**
+
+- Skill names should be intuitive: `@deploy-check`, `@test-data`, `@review-security`
+- Avoid abbreviations: `@depl` or `@sec` are unclear
+
+**Test Your Prompts**
+
+- Prompt-based skills are only as good as their instructions
+- Test with different code samples
+- Refine based on what Copilot returns
+
+---
+
+**PROMPT-BASED SKILL TIPS**
+
+**Be Explicit**
+
+```yaml
+# BAD
+prompt: "Check for errors"
+
+# GOOD  
+prompt: |
+  Check this code for:
+  - Null pointer exceptions
+  - Unhandled promise rejections
+  - Missing input validation
+  Provide specific line numbers and suggested fixes.
+```
+
+**Provide Examples**
+
+```yaml
+prompt: |
+  Generate test names using this format:
+  
+  ✅ "test_functionName_whenCondition_thenExpectedBehavior"
+  ❌ "test1", "testFunction"
+  
+  Example: test_login_whenInvalidPassword_thenReturnsError
+```
+
+**Set Output Format**
+
+```yaml
+prompt: |
+  Output your response as:
+  
+  SUMMARY: One-line overview
+  ISSUES: Bullet list
+  RECOMMENDATIONS: Numbered list
+```
+
+---
+
+**URL-BASED SKILL TIPS**
+
+**Secure Your Endpoints**
+
+- Use authentication tokens
+- Store secrets in environment variables: `${TOKEN_NAME}`
+- Don't commit credentials to `.github/skills.yml`
+
+**Design Response Format**
+
+- Your API should return structured data (JSON preferred)
+- Copilot will format the response for the user
+- Include enough context in the response
+
+**Handle Errors Gracefully**
+
+- Return helpful error messages if API fails
+- Example: "Could not reach deployment service. Check VPN connection."
+
+**Rate Limiting**
+
+- Be mindful of API limits
+- Cache responses when possible on your API side
+
+---
+
+### INTEGRATION WITH OTHER COPILOT FEATURES
+
+**Skills + Copilot Instructions**
+
+"Skills and instructions work together. Instructions provide general repo context. Skills provide specific capabilities."
+
+Example:
+- Instruction: "This is a React app using TypeScript"
+- Skill: `@component-gen` creates components following your structure
+
+**Skills + Agents**
+
+"Copilot Agents can invoke skills during their reasoning. A deployment agent might use your `@status-check` skill automatically."
+
+**Skills + Chat Context**
+
+"Skills have access to:
+- Highlighted code
+- Open files
+- Chat history
+- Git status"
+
+Use this context in your prompts: "Based on the highlighted code..."
+
+---
+
+### Q&A PREP
+
+**Expected Questions:**
+
+**Q: "Where should we define our skills - in every repo or centrally?"**
+
+A: Both patterns work. For team-wide skills (standards, commit formats), create a template repository with `.github/skills.yml` and have devs clone it. For repo-specific skills (deployment commands, domain logic), keep them in that repo.
+
+---
+
+**Q: "Can skills access our production systems?"**
+
+A: URL-based skills can call any API you configure. Use authentication, restrict permissions, and consider read-only endpoints for safety. Skills should query data, not perform destructive actions.
+
+---
+
+**Q: "How do we share skills across multiple repos?"**
+
+A: Currently, skills are per-repository. For shared skills, use:
+- Template repositories
+- GitHub Actions to sync `.github/skills.yml` across repos
+- Maintain a central "skills library" repo teams can copy from
+
+---
+
+**Q: "Can skills execute code or make changes automatically?"**
+
+A: No. Skills provide context and instructions to Copilot, but developers still review and accept suggestions. This maintains safety and control.
+
+---
+
+**Q: "What's the difference between skills and Copilot extensions?"**
+
+A: Skills are lightweight YAML definitions for your organization. Extensions are packaged plugins built by third parties (Sentry, DataDog, etc.) with more complex functionality. Start with skills - they're easier to create and maintain.
+
+---
+
+**Q: "How do we test URL-based skills?"**
+
+A: Build your API endpoint first, test it with curl/Postman, then integrate into the skill. Use environment variables for different environments (staging vs prod APIs).
 
 ---
 
 ### CLOSING STATEMENT
 
-"The key mindset shift is this: stop thinking of Copilot as autocomplete. Think of it as an AI teammate who can read your entire codebase, understand context, and help you ship faster. The @ skills are how you tell it where to focus."
+"Here's the key takeaway: Custom Copilot Skills let you encode your team's unique knowledge directly into the developer workflow. Instead of wikis and Slack threads, your standards and tools become `@commands` that work right where developers code."
 
-"Start simple - use @workspace to explore your code. Then gradually incorporate it into your daily workflow. The developers who get the most value are the ones who treat it as a conversation, not a one-shot command tool."
+"Start simple - create one prompt-based skill for something your team does repeatedly, like code review checklists or documentation templates. Once you see the value, you'll find dozens of opportunities to create skills."
 
----
-
-## RECOMMENDED DEMO REPOSITORY
-
-If you need a good demo repo, I suggest:
-- Use a microservices or full-stack app (shows cross-file context)
-- Something with authentication, API routes, and database models
-- TypeScript/JavaScript for broad audience familiarity
+"Skills are how you make Copilot truly yours."
 
 ---
 
-## Q&A PREP
+## DEMO CHECKLIST
 
-**Expected Questions:**
+**Before the Demo:**
 
-**Q: "Does it work with our private repos?"**
-A: Yes, Copilot Business/Enterprise works with all your private repositories. Content exclusions available for sensitive repos.
+- [ ] Create `.github/skills.yml` with 2-3 pre-built skills
+- [ ] Test each skill in VS Code Copilot Chat
+- [ ] Prepare a simple skill to create live (commit message example works well)
+- [ ] Have example code ready that violates standards (for demo)
+- [ ] If showing URL-based skill, have API endpoint ready or screenshot prepared
 
-**Q: "What about code quality and security?"**
-A: Copilot suggests code, but your review process still applies. Use code scanning and secret scanning. Enterprise includes IP indemnity.
+**Demo Repository Needs:**
 
-**Q: "Can it access our databases or prod systems?"**
-A: No, Copilot only sees your code files and Git history. It doesn't connect to live systems.
-
-**Q: "How much does it cost?"**
-A: $10/user/month (Business), $19/user/month (Enterprise with additional features).
+- [ ] Some code with standards violations (for `@standards` demo)
+- [ ] An undocumented function (for `@docs` demo)
+- [ ] Staged git changes (for `@commitmsg` creation)
 
 ---
 
 ## ADDITIONAL RESOURCES
 
-- [GitHub Copilot Documentation](https://docs.github.com/en/copilot)
-- [Copilot Chat Skills Reference](https://docs.github.com/en/copilot/using-github-copilot/asking-github-copilot-questions-in-your-ide)
-- [Best Practices Guide](https://docs.github.com/en/copilot/using-github-copilot/best-practices-for-using-github-copilot)
+- [Copilot Skills Documentation](https://docs.github.com/en/copilot/customizing-copilot/creating-custom-skills)
+- [Skills YAML Schema Reference](https://docs.github.com/en/copilot/customizing-copilot/skills-yaml-schema)
+- [Example Skills Repository](https://github.com/github/copilot-skills-examples) *(note: check if this exists or use your own)*
