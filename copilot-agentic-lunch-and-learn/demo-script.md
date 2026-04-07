@@ -24,7 +24,7 @@ Level-set the room on what "agentic" means in the context of software developmen
 | **Synchronous (Agent Mode)** | Real-time in your IDE — you watch, guide, and course-correct as Copilot works | Prototyping, pair programming, exploratory coding |
 | **Asynchronous (Coding Agent)** | Background in the cloud — assign an issue, walk away, come back to a PR | Well-scoped tasks, sprint backlog items, maintenance |
 
-> "Think of sync as pair programming and async as delegating to a junior developer. Today I'll show you both — plus how the CLI and community tools like Squad extend the pattern even further."
+> "Think of sync as pair programming and async as delegating to a junior developer. And there's a third pattern — **Continuous AI** — where agents run automatically on repo events, like triaging every new issue. Today I'll show you all three — plus how the CLI and community tools like Squad extend the pattern even further."
 
 ### Transition
 
@@ -114,11 +114,81 @@ Show how Copilot can act as a first-pass reviewer on any pull request — catchi
 
 ### Transition
 
-> "Speaking of the terminal — let me show you the Copilot CLI and a feature called Fleet."
+> "Speaking of the terminal — let me show you how GitHub is taking agentic automation even further with Agentic Workflows."
 
 ---
 
-## Segment 4 — Copilot CLI & Fleet Mode (7 min)
+## Segment 4 — GitHub Agentic Workflows (5 min)
+
+### Goal
+
+Introduce GitHub Agentic Workflows (`gh-aw`) — Markdown-authored, event-driven repo automation that lets AI agents handle recurring tasks like issue triage, documentation maintenance, and CI failure analysis.
+
+### Talking Points
+
+> "Everything we've seen so far — Coding Agent, Code Review — involves a human kicking off a task. But what about the tasks that happen *continuously*? Issue triage, stale PR cleanup, CI failure investigation? That's what **GitHub Agentic Workflows** are built for."
+
+### Demo Steps
+
+**Explain the Concept (1 min)**
+
+1. Open the [GitHub Agentic Workflows docs](https://github.github.com/gh-aw/) in the browser (or show a slide)
+2. Key framing:
+
+> "Agentic Workflows are like GitHub Actions, but instead of writing imperative YAML step-by-step, you write **Markdown** — plain English describing what you want to happen. An AI agent interprets your intent and figures out the *how*. Think of it as **Continuous AI** alongside your Continuous Integration."
+
+**Show a Workflow File (2 min)**
+
+3. Open a sample `.github/workflows/issue-triage.md` file in the demo repo:
+
+   ````markdown
+   ---
+   on:
+     issues:
+       types: [opened, reopened]
+   permissions:
+     issues: read
+   safe-outputs:
+     add-labels: {}
+     add-comment: {}
+   ---
+   # Issue Triage
+
+   Analyze every new issue. Assign the appropriate label (bug, enhancement,
+   documentation, question). If the issue is unclear, comment asking for
+   more details.
+   ````
+
+4. Walk through the two sections:
+   - **YAML frontmatter** — triggers (`on: issues`), permissions (read-only by default), and safe-outputs (the *only* write operations the agent can perform)
+   - **Markdown body** — natural-language intent describing what the agent should do
+
+> **Talking point:** "Notice the security model: the agent gets read-only access by default. The only things it can *write* are explicitly listed under `safe-outputs`. No surprise commits, no uncontrolled changes. Your security team will appreciate that."
+
+**Compile and Run (2 min)**
+
+5. Show the compile step:
+   ```bash
+   gh aw compile
+   ```
+6. Explain: "This generates a hardened `.lock.yml` file — a standard GitHub Actions workflow that runs the AI agent. You commit both the `.md` and the `.lock.yml`."
+
+7. Show a live example or screenshot of the workflow running:
+   - New issue opened → workflow triggers → agent labels it and comments
+
+> **Talking point:** "This is Continuous AI. Every new issue gets triaged automatically. Every CI failure gets investigated. Your team stops context-switching on maintenance and focuses on building. And everything runs with the same security, auditability, and governance as regular GitHub Actions."
+
+**Mention Templates**
+
+8. Briefly mention: "There's a growing sample library at [githubnext/agentics](https://github.com/githubnext/agentics) — issue triage, PR review, CI failure diagnosis, status reports, and more. Great starting points."
+
+### Transition
+
+> "So we've seen agents that code, agents that review, and now agents that automate your repo continuously. Let me show you how the CLI takes this even further with parallel execution."
+
+---
+
+## Segment 5 — Copilot CLI & Fleet Mode (5 min)
 
 ### Goal
 
@@ -146,7 +216,7 @@ Introduce the Copilot CLI as a terminal-first agentic tool, then demonstrate Fle
 
 > **Talking point:** "Same agentic loop as the Coding Agent, but local and synchronous. You watch it work in real time. The `--autopilot` flag lets it run without asking for approval at each step — great for well-defined tasks."
 
-**Fleet Mode — Parallel Agents (5 min)**
+**Fleet Mode — Parallel Agents (3 min)**
 
 6. Explain the concept:
 
@@ -182,7 +252,7 @@ Introduce the Copilot CLI as a terminal-first agentic tool, then demonstrate Fle
 
 ---
 
-## Segment 5 — Squad & the Agentic Ecosystem (3 min)
+## Segment 6 — Squad & the Agentic Ecosystem (3 min)
 
 ### Goal
 
@@ -216,7 +286,7 @@ Introduce Squad as an example of community-built tooling on top of Copilot's age
 5. Briefly mention the broader ecosystem:
 
 > "Squad is one example. The pattern we're seeing is:
-> - **GitHub ships the primitives** — Coding Agent, CLI, Fleet, Code Review, MCP
+> - **GitHub ships the primitives** — Coding Agent, CLI, Fleet, Code Review, Agentic Workflows, MCP
 > - **The community builds the orchestration** — Squad, custom agents, workflow automation
 > - **Your team customizes for your context** — Custom Instructions, Skills, MCP servers
 >
@@ -228,17 +298,18 @@ Introduce Squad as an example of community-built tooling on top of Copilot's age
 
 ---
 
-## Segment 6 — Wrap-Up & Q&A (2 min)
+## Segment 7 — Wrap-Up & Q&A (2 min)
 
 ### Closing Summary
 
-> "Here's what we covered in the last 25 minutes:
+> "Here's what we covered in the last 28 minutes:
 >
 > | What | Why It Matters |
 > |------|---------------|
-> | **Agentic Workflows** | AI that takes action, not just suggests — sync for pairing, async for delegation |
+> | **Agentic Workflows (Concept)** | AI that takes action, not just suggests — sync for pairing, async for delegation |
 > | **Coding Agent** | Assign an issue, get a PR — autonomous coding in the cloud |
 > | **Code Review** | AI first-pass review that accelerates your team's review cycle |
+> | **GitHub Agentic Workflows (gh-aw)** | Markdown-authored Continuous AI — event-driven repo automation with security guardrails |
 > | **Copilot CLI + Fleet** | Terminal-first agentic coding with parallel sub-agent execution |
 > | **Squad & Ecosystem** | Community tools building multi-agent teams on top of Copilot |
 >
@@ -260,6 +331,7 @@ Introduce Squad as an example of community-built tooling on top of Copilot's age
 | "Can we use this with our existing CI/CD?" | Yes — the agent triggers your existing CI workflows. If your tests fail, the agent sees the failure and tries to fix it. Your pipeline doesn't change. |
 | "How does Fleet handle conflicts between sub-agents?" | The orchestrator manages dependencies as a DAG. Tasks that depend on each other run sequentially; independent tasks run in parallel. Final integration resolves overlaps. |
 | "Is Squad production-ready?" | Squad is alpha software — experimental and evolving. Great for exploration and internal tooling, but evaluate before production use. |
+| "How do Agentic Workflows differ from GitHub Actions?" | Actions are imperative YAML — you script every step. Agentic Workflows are intent-driven Markdown — you describe the goal, and an AI agent figures out the how. They compile down to Actions for execution. |
 | "What about IP and code privacy?" | Copilot Enterprise: no code used for training, data encrypted in transit and at rest, content exclusions available for sensitive repos. |
 
 ---
@@ -277,6 +349,12 @@ Introduce Squad as an example of community-built tooling on top of Copilot's age
 - [From idea to PR: A guide to GitHub Copilot's agentic workflows](https://github.blog/ai-and-ml/github-copilot/from-idea-to-pr-a-guide-to-github-copilots-agentic-workflows/)
 - [Coding Agent 101: Getting started](https://github.blog/ai-and-ml/github-copilot/github-copilot-coding-agent-101-getting-started-with-agentic-workflows-on-github/)
 - [The difference between coding agent and agent mode](https://github.blog/developer-skills/github/less-todo-more-done-the-difference-between-coding-agent-and-agent-mode-in-github-copilot/)
+
+**GitHub Agentic Workflows (gh-aw):**
+- [GitHub Agentic Workflows docs](https://github.github.com/gh-aw/)
+- [Automate repository tasks with GitHub Agentic Workflows (blog)](https://github.blog/ai-and-ml/automate-repository-tasks-with-github-agentic-workflows/)
+- [GitHub Agentic Workflows are now in technical preview (changelog)](https://github.blog/changelog/2026-02-13-github-agentic-workflows-are-now-in-technical-preview/)
+- [githubnext/agentics — sample workflow templates](https://github.com/githubnext/agentics)
 
 **Code Review:**
 - [Using Copilot Code Review (docs)](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/request-a-code-review/use-code-review)
