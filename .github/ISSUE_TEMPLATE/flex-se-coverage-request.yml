@@ -1,0 +1,152 @@
+name: "Flex SE Coverage Request"
+description: "Request Flex SE coverage for an SE going on extended leave"
+title: "[Coverage Request] SE: "
+labels: ["flex-se-coverage", "pending-review"]
+assignees:
+  - nathos
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Flex SE Coverage Request
+
+        Thank you for submitting a coverage request. Please fill out all required fields so our Flex SE team can evaluate and prioritize your request.
+
+        **Typical turnaround:** Requests are reviewed weekly by the Flex SE Manager.
+
+  - type: input
+    id: se-name
+    attributes:
+      label: "SE Who Needs Coverage"
+      description: "Full name and GitHub handle of the SE going on leave"
+      placeholder: "e.g., Jane Smith (@janesmith)"
+    validations:
+      required: true
+
+  - type: input
+    id: se-manager
+    attributes:
+      label: "Requesting Manager/Director"
+      description: "Your name and GitHub handle"
+      placeholder: "e.g., John Doe (@johndoe)"
+    validations:
+      required: true
+
+  - type: textarea
+    id: ae-coverage
+    attributes:
+      label: "Account Executive(s) Covered"
+      description: "List the AE(s) and their accounts that need coverage"
+      placeholder: |
+        - AE Name — Account(s)
+        - AE Name — Account(s)
+    validations:
+      required: true
+
+  - type: input
+    id: coverage-start
+    attributes:
+      label: "Coverage Start Date"
+      description: "When does coverage need to begin?"
+      placeholder: "YYYY-MM-DD"
+    validations:
+      required: true
+
+  - type: input
+    id: coverage-end
+    attributes:
+      label: "Coverage End Date"
+      description: "When does coverage end? (SE's expected return date)"
+      placeholder: "YYYY-MM-DD"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: coverage-duration
+    attributes:
+      label: "Estimated Coverage Duration"
+      description: "Approximately how long is coverage needed?"
+      options:
+        - "1-2 months"
+        - "2-3 months"
+        - "3-4 months"
+        - "4-6 months"
+        - "6+ months"
+    validations:
+      required: true
+
+  - type: textarea
+    id: account-context
+    attributes:
+      label: "Account Context & Strategic Importance"
+      description: |
+        Provide context on the accounts. Help us understand why Flex SE coverage is important here:
+        - Are any of these strategic/key accounts?
+        - Active opportunities or POCs in flight?
+        - Upcoming renewals or expansions?
+        - Busy patch of business expected?
+      placeholder: |
+        Acme Corp is a strategic account with a $500K expansion opportunity closing in Q2.
+        Currently mid-POC on GitHub Advanced Security rollout across 3,000 developers.
+        Monthly executive check-ins scheduled with CISO.
+    validations:
+      required: true
+
+  - type: textarea
+    id: ongoing-initiatives
+    attributes:
+      label: "Ongoing Initiatives & Key Activities"
+      description: "What technical initiatives, POCs, or projects are currently in progress that the Flex SE would need to continue?"
+      placeholder: |
+        - GHAS rollout: Phase 2 starting next month, need to run enablement workshops
+        - Copilot pilot: 200 seat pilot, collecting feedback for executive review in April
+        - Migration: Moving from GitLab, 50% complete
+    validations:
+      required: false
+
+  - type: textarea
+    id: contingency-plan
+    attributes:
+      label: "Contingency Plan (if no Flex SE available)"
+      description: "What is the fallback plan if a Flex SE cannot be assigned? (e.g., another SE covering part-time, Manager stepping in, reduced coverage)"
+      placeholder: |
+        If no Flex SE is available:
+        - SE Manager can cover executive calls
+        - Neighboring SE (@handle) can handle urgent technical requests
+        - Non-urgent items can wait until SE returns
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: "Request Priority"
+      description: "How critical is Flex SE coverage for these accounts?"
+      options:
+        - "🔴 Critical — Strategic accounts at risk, active deal cycles"
+        - "🟡 High — Important accounts, ongoing initiatives need continuity"
+        - "🟢 Standard — Coverage needed but accounts are stable"
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: "Additional Context"
+      description: "Anything else the Flex SE team should know? (e.g., preferred Flex SE, special skills needed, travel requirements)"
+      placeholder: "Optional: any other relevant details"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: pre-leave-handoff
+    attributes:
+      label: "Pre-Leave Handoff"
+      description: "Confirm the following before submitting"
+      options:
+        - label: "The departing SE is willing to do a handoff call with the assigned Flex SE before their leave"
+          required: true
+        - label: "Account context documentation will be provided (or is linked above)"
+          required: true
+        - label: "AE(s) have been informed that a Flex SE may be covering"
+          required: false
