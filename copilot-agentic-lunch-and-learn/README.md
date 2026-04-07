@@ -1,8 +1,24 @@
 # Copilot Agentic Workflows — Lunch & Learn Demo Session
 
-> **Session Duration:** 20–30 minutes  
+> **Duration:** 20–30 minutes &nbsp;|&nbsp; **Format:** Live demos + discussion &nbsp;|&nbsp; **Audience:** Engineering teams exploring AI-assisted development
+
+## Synopsis
+
+GitHub Copilot has evolved from code completion into a suite of **agentic capabilities** — AI that doesn't just suggest code, but takes action across the entire software development lifecycle. In this session we'll walk through the key building blocks, see them in action on a real codebase, and discuss how they fit into your team's workflow.
+
+**What you'll see:**
+
+- **Coding Agent** — Assign a GitHub issue to Copilot and watch it plan, code, test, and open a pull request autonomously in the cloud.
+- **Copilot Code Review** — An AI-powered first-pass reviewer that catches bugs and suggests improvements before your human reviewers look at a PR.
+- **GitHub Agentic Workflows** — Write repository automations in plain Markdown. Describe your intent, and an AI agent executes it — issue triage, CI failure analysis, doc maintenance, and more.
+- **Copilot CLI & Fleet** — Terminal-first agentic coding, plus the ability to fan out parallel sub-agents for multi-part tasks.
+- **The broader ecosystem** — Community tools like [Squad](https://github.com/bradygaster/squad) that add multi-agent orchestration on top of Copilot.
+
+**Key takeaway:** Agents handle the heavy lifting; your team stays in the loop for every decision. Nothing ships without human review.
+
+---
+
 > **Prepared by:** Solutions Engineering (@commit2cloud)  
-> **Format:** Live demos in browser + terminal, with talk-track narration  
 > **Demo App:** [octodemo/octocat_supply](https://github.com/octodemo/octocat_supply) (bootstrapped via [issue template](https://github.com/octodemo/bootstrap/issues/new?template=001_octocat_supply.yml))
 
 ---
@@ -21,7 +37,9 @@
 
 ---
 
-## Contents
+## Presenter Notes *(internal — do not share)*
+
+### Contents
 
 | Document | Purpose |
 |----------|---------|
@@ -29,7 +47,7 @@
 
 ---
 
-## Key Messaging
+### Key Messaging
 
 1. **Agentic ≠ autopilot** — humans stay in the loop at every decision point.
 2. **Sync + Async = full coverage** — Agent Mode for real-time pairing; Coding Agent for background work; CLI for terminal-first developers.
@@ -39,7 +57,7 @@
 
 ---
 
-## Pre-Session Checklist
+### Pre-Session Checklist
 
 - [ ] Fork or clone [octodemo/octocat_supply](https://github.com/octodemo/octocat_supply) into your demo org
 - [ ] Create a well-scoped issue ready to assign to `@copilot` (e.g., "Add a discount code field to the checkout page")
